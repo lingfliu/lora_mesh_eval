@@ -16,7 +16,7 @@ if __name__ == '__main__':
     cnt = 1  #第一帧
     i=0
     while True:
-            if ser.in_waiting: #100帧接收代码
+            if ser.in_waiting: #100字节接收代码，20字节不适合
                 rx = ser.read(ser.in_waiting)
                 i += 1
                 print("{0}，".format(rx))
