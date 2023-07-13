@@ -8,7 +8,6 @@ port = 'COM9' # 修改端口
 baud = 9600 # 波特率
 timeout = 1 # 超时时间
 
-
 if __name__ == '__main__':
     ser = serial.Serial(port, baud, timeout=1)
     # command = b'\x01\x00\x01\x0D\xA5\xA5\x6C\x40\x12\x07\x17\x00\x00\x00\x02\x03\x00\x22'
@@ -16,15 +15,25 @@ if __name__ == '__main__':
     # ser.write(command)
     cnt = 1  #第一帧
     i=0
-    with open('C:/Users/nimiao/Desktop/lora_mesh_eval-master/lora_mesh_eval-master/test_rx_1.txt','w+') as M: #
-        while True:
-            if ser.in_waiting:
+    while True:
+            if ser.in_waiting: #100字节接收代码，20字节不适合
                 rx = ser.read(ser.in_waiting)
                 i += 1
-                print("{0}".format(rx))
+                print("{0}，".format(rx))
                 if i == 4:
                     print("===接收第{0}帧成功，时间为：{1}".format(cnt,datetime.datetime.now().strftime('%H:%M:%S.%f')))
                     i = 0
                     cnt += 1
-
+    ##将时间写进txt文件
+    # with open('C:/Users/nimiao/Desktop/lora_mesh_eval-master/lora_mesh_eval-master/test_rx_1.txt','w+') as M: #
+    #     while True:
+    #         if ser.in_waiting:
+    #             rx = ser.read(ser.in_waiting)
+    #             i += 1
+    #             print("{0}，".format(rx))
+    #             if i == 4:
+    #                 print("===接收第{0}帧成功，时间为：{1}".format(cnt,datetime.datetime.now().strftime('%H:%M:%S.%f')))
+    #                 M.write("{}\n".format(datetime.datetime.now().strftime('%H:%M:%S.%f')))
+    #                 i = 0
+    #                 cnt += 1
 
