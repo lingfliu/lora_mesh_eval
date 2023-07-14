@@ -67,6 +67,7 @@ if __name__ == '__main__':
                             str = b''.join(chunk_list)
                             img_decode = cv2.imdecode(base64.b64decode(str), cv2.IMREAD_COLOR)
                             cv2.imwrite('test_img_base64.jpg', img_decode)
+                            break
 
 
 

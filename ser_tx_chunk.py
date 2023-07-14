@@ -14,7 +14,6 @@ timeout = 1# 超时时间
 rx_addr = 0x0002 # 接收端地址
 
 if __name__ == '__main__':
-    ser = serial.Serial(port, baud, timeout=1)
 
     # 读取图像文件并编码为base64
     img = cv2.imread('test_img.jpg')
@@ -39,11 +38,14 @@ if __name__ == '__main__':
 
     # 报文传输计数器
     chunk_list = chunk_split(b64_img)
+    # test_chunk_encode = encode(rx_addr, MSG_TYPE_CHUNK_DATA, chunk_list[0])
 
     meta = len(chunk_list)
     data = int2bytes(meta, 4, 'big', signed=False)
     # send meta
     msg_byte = encode(rx_addr, MSG_TYPE_CHUNK_META, data)
+
+    ser = serial.Serial(port, baud, timeout=1)
     ser.write(msg_byte)
 
     # 发送成功, 否则此处死循环

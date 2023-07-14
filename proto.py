@@ -22,7 +22,7 @@ def encode(dest, msg_type, data, ack=True, depth=7):
     l = len(bs) # 数据长度
 
     # 如果超出最大长度，返回错误
-    if l  > MAX_PAYLOAD_LEN:
+    if l > MAX_PAYLOAD_LEN:
         return []
 
     '''
@@ -37,8 +37,25 @@ def encode(dest, msg_type, data, ack=True, depth=7):
     depth_byte = int2bytes(depth, 1, True, False)
 
     route_byte = b'\x01'
-    dest = dest.to_bytes(4, 'big')
-    return dest + ack_byte + depth_byte + depth.to_bytes(4, 'big') + route_byte + int2bytes(l, 4, True, False) + bs
+    dest = dest.to_bytes(2, 'big')
+
+    if msg_type == MSG_TYPE_CHUNK_DATA:
+        l = len(data)
+        l_enc = l.to_bytes(4, 'big', signed=False)
+        bs = msg_type.to_bytes(1, 'big') + l_enc + bs
+    else:
+        bs = msg_type.to_bytes(1, 'big') + bs
+    super_payload = dest + ack_byte + depth_byte + depth.to_bytes(1, 'big') + route_byte + bs
+
+    super_payload_len = len(super_payload).to_bytes(1,'big', signed=False)
+
+    package = b'\x05\x00\x01' + super_payload_len + super_payload
+
+    xor = package[0]
+    for b in package[1:]:
+        xor = xor ^ b
+
+    return package + xor.to_bytes(1, 'big', signed=False)
 
 
 
