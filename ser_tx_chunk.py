@@ -7,12 +7,11 @@ from proto import chunk_split, encode, MSG_TYPE_PLAIN, MSG_TYPE_CHUNK_DATA, MSG_
 from byte_parse import int2bytes
 
 
-port = 'COM3' # 修改端口
+port = 'COM6' # 修改端口
 baud = 115200 # 波特率
 timeout = 1# 超时时间
 
 rx_addr = 0x0002 # 接收端地址
-
 
 if __name__ == '__main__':
     ser = serial.Serial(port, baud, timeout=1)

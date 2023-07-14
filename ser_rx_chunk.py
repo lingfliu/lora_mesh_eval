@@ -10,7 +10,7 @@ SER_STATE_IDLE = 0
 SER_STATE_PLAIN = 1
 SER_STATE_CHUNK = 2
 
-port = 'COM3' # 修改端口
+port = 'COM9' # 修改端口
 baud = 115200 # 波特率
 timeout = 1# 超时时间
 
@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     # 发送成功, 否则此处死循环
     # TODO: ACK handling to avoid dead loop
+    print("开始接收！")
     while True:
         if ser.in_waiting:
             rx = ser.read(ser.in_waiting).decode('ascii')

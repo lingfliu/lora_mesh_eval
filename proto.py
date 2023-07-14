@@ -37,8 +37,10 @@ def encode(dest, msg_type, data, ack=True, depth=7):
     depth_byte = int2bytes(depth, 1, True, False)
 
     route_byte = b'\x01'
+    dest = dest.to_bytes(4, 'big')
+    return dest + ack_byte + depth_byte + depth.to_bytes(4, 'big') + route_byte + int2bytes(l, 4, True, False) + bs
 
-    return dest + ack_byte + depth_byte + depth + route_byte + int2bytes(l, 4, True, False) + bs
+
 
 """
 读取用户数据并解码
